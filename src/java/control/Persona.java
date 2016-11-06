@@ -17,6 +17,15 @@ public class Persona extends Control{
     String app;
     String nombre;
     String fecha_nac;
+    String correo;
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
     
     public int getId() {
         return id;
@@ -58,5 +67,10 @@ public class Persona extends Control{
             System.out.println("No se pudieron recuperar las personas " + ex.getMessage());
         }
         return personas;
+    }
+
+    @Override
+    public String toString() {
+        return "Persona{" + "id=" + id + ", app=" + app + ", nombre=" + nombre + ", fecha_nac=" + fecha_nac + ", correo=" + correo + '}';
     }
 }
