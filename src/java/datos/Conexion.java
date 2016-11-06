@@ -5,8 +5,10 @@
  */
 package datos;
 
+import control.Empleado;
 import control.Persona;
 import control.DetalleOrden;
+import control.Sucursal;
 import control.SucursalProducto;
 import control.Producto;
 import control.CategoriaProducto;
@@ -182,5 +184,46 @@ public class Conexion {
             System.out.println("SQLException: " + ex.getMessage() + " getOrdenesByCliente");
         }
         return menu;        
+    }
+    
+    public ArrayList<Empleado> getEmpleados(){
+        ArrayList<Empleado> empleados = new ArrayList<Empleado>();
+        Empleado e;
+        Persona p;
+        Sucursal s;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT nIdEmpleado, P.nIdPersona, P.sNombre + ' ' + P.sApp + ' ' + P.sApm AS nombre, P.dFechaNacimiento, P.sCorreo, dFechaContratacion, sRFC, bActivo, sTipoEmpleado, S.sNombre AS sucursal\n" +
+                "FROM Empleado AS E\n" +
+                "JOIN CTipo_Empleado AS TE\n" +
+                "ON E.nIdTipoempleado=TE.nIdTipoEmpleado\n" +
+                "JOIN (SELECT nIdSucursal, sNombre\n" +
+                "	FROM Sucursal) AS S\n" +
+                "ON S.nIdSucursal=E.nIdSucursal\n" +
+                "JOIN Persona AS P\n" +
+                "ON E.nIdPersona=P.nIdPersona\n" +
+                "GROUP BY sTipoEmpleado, S.sNombre, E.dFechaContratacion, nIdEmpleado, P.nIdPersona, P.sNombre, P.sApp, P.sApm, P.dFechaNacimiento, P.sCorreo, E.sRFC, E.bActivo;");
+            while (rs.next()) {
+                e = new Empleado();
+                p = new Persona();
+                s = new Sucursal();
+                e.setId(rs.getInt(1));
+                p.setId(rs.getInt(2));
+                p.setNombre(rs.getString(3));
+                p.setFecha_nac(rs.getString(4));
+                p.setCorreo(rs.getString(5));
+                e.setPersona(p);
+                e.setFechaContratacion(rs.getString(6));
+                e.setRfc(rs.getString(7));
+                e.setActivo(rs.getBoolean(8));
+                e.setTipoEmpleado(rs.getString(9));
+                s.setNombre(rs.getString(10));
+                e.setSucursal(s);
+                empleados.add(e);
+            }
+        } catch (Exception ex) {
+            System.out.println("SQLException: " + ex.getMessage() + " getOrdenesByCliente");
+        }
+        return empleados;
     }
 }
