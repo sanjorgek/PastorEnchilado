@@ -9,6 +9,7 @@ import control.Persona;
 import control.DetalleOrden;
 import control.SucursalProducto;
 import control.Producto;
+import control.Proveedor;
 import control.CategoriaProducto;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -182,5 +183,11 @@ public class Conexion {
             System.out.println("SQLException: " + ex.getMessage() + " getOrdenesByCliente");
         }
         return menu;        
+    }
+    
+    public ArrayList<Proveedor> getProveedoresPorSucursal(int idSucursal){
+        ArrayList<Proveedor> proveedores = new ArrayList<Proveedor>();
+        
+        return proveedores;
     }
 }
