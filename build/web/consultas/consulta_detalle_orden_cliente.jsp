@@ -16,7 +16,7 @@
         <h1>Consulta Ordenes por Cliente</h1>
         <form action="consulta_detalle_orden_cliente_proceso.jsp" method="post">
             Identificador del Cliente  <input type="text" required="true" name="idCliente">
-            <input type="submit" value="Registrar">
+            <input type="submit" value="Buscar">
         </form>
     </body>
 </html>
