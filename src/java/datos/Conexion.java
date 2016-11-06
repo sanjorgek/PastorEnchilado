@@ -9,6 +9,7 @@ import control.Persona;
 import control.DetalleOrden;
 import control.SucursalProducto;
 import control.Producto;
+import control.CategoriaProducto;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -140,28 +141,39 @@ public class Conexion {
         return detalleOrdenes;
     }
     
-    public ArrayList getMenu(int idSucursal){
-        ArrayList menu = new ArrayList();
+    public ArrayList<SucursalProducto> getMenu(int idSucursal){
+        ArrayList<SucursalProducto> menu = new ArrayList<SucursalProducto>();
         SucursalProducto sp;
         Producto p;
-
+        CategoriaProducto c;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT P.nIdProducto, nIdSucursalProducto, mPrecio, dFechaActualizacion, SP.bActivo, sProducto, sCategoria\n" +
+            rs = stmt.executeQuery("SELECT P.nIdProducto, nIdSucursalProducto, mPrecio, dFechaActualizacion, SP.bActivo, sProducto, nIdCategoria, sCategoria\n" +
                 "FROM (SELECT nIdSucursal\n" +
                 "	FROM Sucursal\n" +
                 "	WHERE nIdSucursal=" + idSucursal + ") AS S\n" +
                 "JOIN (Select *\n" +
                 "	FROM Sucursal_Producto) AS SP\n" +
                 "ON S.nIdSucursal=SP.nIdSucursal\n" +
-                "JOIN (SELECT nIdProducto, sProducto, bActivo, sCategoria\n" +
+                "JOIN (SELECT nIdProducto, sProducto, bActivo, CP.nIdCategoria, sCategoria\n" +
                 "	FROM Producto\n" +
                 "	JOIN CCategoria_Producto AS CP\n" +
                 "	ON Producto.nIdCategoria=CP.nIdCategoria) AS P\n" +
                 "ON P.nIdProducto=SP.nIdProducto;");
             while (rs.next()) {
                 sp = new SucursalProducto();
+                p = new Producto();
+                c = new CategoriaProducto();
                 p.setId(rs.getInt(1));
+                sp.setId(rs.getInt(2));
+                sp.setPrecio(rs.getInt(3));
+                sp.setFechaActualizacion(rs.getString(4));
+                p.setActivo(rs.getBoolean(5));
+                p.setName(rs.getString(6));
+                c.setId(rs.getInt(7));
+                c.setNombre(rs.getString(8));
+                p.setCategoria(c);
+                sp.setProducto(p);
                 menu.add(sp);
             }
             rs.close();

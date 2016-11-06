@@ -5,6 +5,7 @@
  */
 package control;
 
+import control.CategoriaProducto;
 import java.util.Objects;
 
 /**
@@ -15,6 +16,15 @@ public class Producto extends Control{
     int id;
     String name;
     boolean activo;
+    CategoriaProducto categoria;
+
+    public CategoriaProducto getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(CategoriaProducto categoria) {
+        this.categoria = categoria;
+    }
 
     public int getId() {
         return id;
@@ -47,10 +57,11 @@ public class Producto extends Control{
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 53 * hash + this.id;
-        hash = 53 * hash + Objects.hashCode(this.name);
-        hash = 53 * hash + (this.activo ? 1 : 0);
+        int hash = 5;
+        hash = 67 * hash + this.id;
+        hash = 67 * hash + Objects.hashCode(this.name);
+        hash = 67 * hash + (this.activo ? 1 : 0);
+        hash = 67 * hash + Objects.hashCode(this.categoria);
         return hash;
     }
 
@@ -75,9 +86,11 @@ public class Producto extends Control{
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
+        if (!Objects.equals(this.categoria, other.categoria)) {
+            return false;
+        }
         return true;
     }
-    
     
     
 }

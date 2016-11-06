@@ -120,8 +120,8 @@ public class SucursalProducto extends Control {
         return "SucursalProducto{" + "id=" + id + ", precio=" + precio + ", fechaActualizacion=" + fechaActualizacion + ", activo=" + activo + ", sucursal=" + sucursal + ", producto=" + producto + '}';
     }
 
-    public ArrayList getMenu(int idSucursal){
-        ArrayList menu = new ArrayList();
+    public ArrayList<SucursalProducto> getMenu(int idSucursal){
+        ArrayList<SucursalProducto> menu = new ArrayList<SucursalProducto>();
         try{
             menu = conexionBD.getMenu(idSucursal);
         }catch(Exception ex){
