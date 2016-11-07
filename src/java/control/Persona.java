@@ -15,6 +15,7 @@ public class Persona extends Control{
 
     int id;
     String app;
+    String apm;
     String nombre;
     String fecha_nac;
     String correo;
