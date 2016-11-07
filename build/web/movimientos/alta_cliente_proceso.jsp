@@ -27,5 +27,9 @@
     t.conecta();
     Telefono telefono = t.guardaTelefono(sTelefono, tipo, pCliente.getId());
     t.desconecta();
-    pCliente.asignaTelefono(telefono, tipo);
+    if(pCliente != null && clienteP != null && telefono != null && pCliente.asignaTelefono(telefono, tipo)){
+        out.write("Cliente Registrado");
+    }else{
+        out.write("No se Registró el Cliente");
+    }
 %>
