@@ -3,7 +3,8 @@
     Created on : 29-oct-2016, 1:26:53
     Author     : erick
 --%>
-
+<%@page import="control.TipoTelefono"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,7 +14,7 @@
     </head>
     <body>
         <h1>Alta Cliente</h1>
-        <form action="alta_estado_proceso.jsp" method="post">
+        <form action="alta_cliente_proceso.jsp" method="post">
             Nombre/s de Cliente a registrar  <input type="text" required="true" name="nombre">
             <br>
             Apellido Paterno de Cliente a registrar  <input type="text" required="true" name="app">
@@ -49,7 +50,18 @@
             <br>
             Correo del Cliente a registrar <input type="text" required="true" name="correo">
             <br>
-            Tipo de Cliente a registrar  <input type="text" required="true" name="dia">
+            Tipo de telefono de Cliente a registrar  <select name="tipo">
+                <%
+                    TipoTelefono tt = new TipoTelefono();
+                    tt.conecta();
+                    ArrayList<TipoTelefono> tts = tt.getTipos();
+                    tt.desconecta();
+                    for(int i = 0; i<tts.size(); i++){
+                        tt = tts.get(i);
+                        out.print("<option value=\""+ tt.getId() +"\">"+tt.getTipos()+"</option>");
+                    }
+                %>
+            </select>
             <br>
             Telefono de Cliente a registrar  <input type="text" required="true" name="telefono">
             <br>

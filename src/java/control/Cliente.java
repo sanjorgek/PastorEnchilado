@@ -5,6 +5,12 @@
  */
 package control;
 
+import java.util.UUID;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+
 /**
  *
  * @author Professional
@@ -65,5 +71,21 @@ public class Cliente extends Control{
         this.persona = persona;
     }
     
-    
+    public Cliente guardaCliente(int idPersona){
+        try{
+            String uuid = UUID.randomUUID().toString();
+            TimeZone tz = TimeZone.getTimeZone("UTC");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            df.setTimeZone(tz);
+            String creacion = df.format(new Date());
+            if(conexionBD.guardaCliente(uuid, 0.0, creacion, idPersona)==1){
+                return conexionBD.getCliente(uuid);
+            }else{
+                throw new Exception("No se pudo crear el cliente");
+            }
+        }catch(Exception ex){
+            System.out.println("No se pudo crear el cliente " + ex.getMessage());
+        }
+        return null;
+    }
 }
