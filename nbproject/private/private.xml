@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Professional/Desktop/PastorEnchilado/src/java/control/Control.java</file>
-            <file>file:/C:/Users/Professional/Desktop/PastorEnchilado/web/movimientos/alta_estado.jsp</file>
-            <file>file:/C:/Users/Professional/Desktop/PastorEnchilado/web/movimientos/alta_estado_proceso.jsp</file>
+            <file>file:/C:/Users/Professional/Desktop/PastorEnchilado/src/java/control/Empleado.java</file>
+            <file>file:/C:/Users/Professional/Desktop/PastorEnchilado/src/java/control/Sucursal.java</file>
+            <file>file:/C:/Users/Professional/Desktop/PastorEnchilado/web/index.html</file>
+            <file>file:/C:/Users/Professional/Desktop/PastorEnchilado/web/consultas/consulta_empleado.jsp</file>
+            <file>file:/C:/Users/Professional/Desktop/PastorEnchilado/web/consultas/consulta_personas.jsp</file>
             <file>file:/C:/Users/Professional/Desktop/PastorEnchilado/src/java/datos/Conexion.java</file>
             <file>file:/C:/Users/Professional/Desktop/PastorEnchilado/src/java/control/Estado.java</file>
             <file>file:/C:/Users/Professional/Desktop/PastorEnchilado/src/java/control/Persona.java</file>
