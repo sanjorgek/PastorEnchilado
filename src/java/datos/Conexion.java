@@ -7,10 +7,12 @@ package datos;
 
 import control.Empleado;
 import control.Persona;
+import control.Cliente;
 import control.DetalleOrden;
 import control.Sucursal;
 import control.Direccion;
 import control.Telefono;
+import control.TipoTelefono;
 import control.SucursalProducto;
 import control.Producto;
 import control.CategoriaProducto;
@@ -276,5 +278,166 @@ public class Conexion {
             System.out.println("SQLException: " + ex.getMessage() + " getSucursales");
         }
         return sucursales;
+    }
+    
+    public int guardaPersona(String app, String apm, String nombre, String fecha_nac, String correo){
+        int resultado = -1;
+        try {
+            stmt = con.createStatement();
+            resultado = stmt.executeUpdate("INSERT INTO Persona\n" +
+                "           (sApp\n" +
+                "           ,sApm\n" +
+                "           ,sNombre\n" +
+                "           ,dFechaNacimiento\n" +
+                "           ,sCorreo)\n" +
+                "     VALUES\n" +
+                "           ('"+ app +"'\n" +
+                "           ,'"+ apm +"'\n" +
+                "           ,'"+ nombre +"'\n" +
+                "           ,'"+ fecha_nac +"'\n" +
+                "           ,'"+ correo +"')");
+            stmt.close();
+        } catch (Exception ex) {
+            System.out.println("SQLException: " + ex.getMessage() + " guardaPersona");
+        }
+        return resultado;
+    }
+    
+    public Persona getPersona(String correo){
+        Persona p = new Persona();
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT *\n" +
+                "FROM Persona\n" +
+                "WHERE sCorreo='"+correo+"';");
+            if(rs.next()){
+                p.setId(rs.getInt(1));
+                p.setApp(rs.getString(2));
+                p.setApm(rs.getString(3));
+                p.setFecha_nac(rs.getString(4));
+                p.setCorreo(rs.getString(5));
+            }
+            rs.close();
+            stmt.close();
+        }catch (Exception ex) {
+            System.out.println("SQLException: " + ex.getMessage() + " getPersona");
+        }
+        return p;
+    }
+    
+    public int guardaCliente(String uuid, double dinero, String creacion, int idPersona){
+        int resultado = -1;
+        try {
+            stmt = con.createStatement();
+            resultado = stmt.executeUpdate("INSERT INTO Cliente\n" +
+                "   (sMonedero,mSaldo,dFechaRegistro,bActivo,nIdPersona)\n" +
+                "VALUES\n" +
+                "   ('"+uuid+"',"+dinero+",'"+creacion+"',1,"+idPersona+")");
+            stmt.close();
+        } catch (Exception ex) {
+            System.out.println("SQLException: " + ex.getMessage() + " guardaCiente");
+        }
+        return resultado;
+    }
+    
+    public Cliente getCliente(String uuid){
+        Cliente c = new Cliente();
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT *\n" +
+                "FROM Cliente\n" +
+                "WHERE sMonedero='"+uuid+"';");
+            if(rs.next()){
+                c.setId(rs.getInt(1));
+                c.setMonedero(rs.getString(2));
+                c.setSaldo(rs.getDouble(3));
+                c.setFechaRegistro(rs.getString(4));
+                c.setActivo(rs.getBoolean(5));
+            }
+            rs.close();
+            stmt.close();
+        }catch (Exception ex) {
+            System.out.println("SQLException: " + ex.getMessage() + " getPersona");
+        }
+        return c;
+    }
+    
+    public int guardaTelefono(String telefono, int tipo, int idPersona){
+        int resultado = -1;
+        try {
+            stmt = con.createStatement();
+            resultado = stmt.executeUpdate("INSERT INTO Telefono\n" +
+                "    (sTelefono\n" +
+                "    ,bActivo)\n" +
+                "VALUES\n" +
+                "    ('"+telefono+"'\n" +
+                "    ,1);\n");
+            rs.close();
+            stmt.close();
+        }catch (Exception ex) {
+            System.out.println("SQLException: " + ex.getMessage() + " guardaTelefono");
+        }
+        return resultado;
+    }
+    
+    public Telefono getTelefono(String telefono){
+        Telefono t = new Telefono();
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT *\n" +
+                "FROM Telefono\n" +
+                "WHERE sTelefono='"+telefono+"';");
+            if(rs.next()){
+                t.setId(rs.getInt(1));
+                t.setTelefono(rs.getString(2));
+                t.setActivo(rs.getBoolean(3));
+            }
+            rs.close();
+            stmt.close();
+        }catch (Exception ex) {
+            System.out.println("SQLException: " + ex.getMessage() + " getPersona");
+        }
+        return t;
+    }
+    
+    public boolean asignaTelefono(int idPersona, int idTelefono, int tipo){
+        boolean resultado = false;
+        try {
+            stmt = con.createStatement();
+            resultado = stmt.executeUpdate("INSERT INTO Persona_Telefono\n" +
+                "    (nIdPersona\n" +
+                "    ,nIdTelefono\n" +
+                "    ,bActivo\n" +
+                "    ,nIdTipoTelefono)\n" +
+                "VALUES\n" +
+                "    ("+idPersona+"\n" +
+                "    ,"+idTelefono+"\n" +
+                "    ,1\n" +
+                "    ,"+tipo+")")==1;
+            stmt.close();
+        }catch (Exception ex) {
+            System.out.println("SQLException: " + ex.getMessage() + " guardaTelefono");
+        }
+        return resultado;
+    }
+    
+    public ArrayList<TipoTelefono> getTipos(){
+        ArrayList<TipoTelefono> tts = new ArrayList<TipoTelefono>();
+        TipoTelefono tt;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("");
+            while (rs.next()) {
+                tt = new TipoTelefono();
+                tt.setId(rs.getInt(1));
+                tt.setTipo(rs.getString(2));
+                tts.add(tt);
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception ex) {
+            System.out.println("SQLException: " + ex.getMessage() + " getTipos");
+        }
+        return tts; 
     }
 }

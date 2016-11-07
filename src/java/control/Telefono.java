@@ -73,5 +73,19 @@ public class Telefono extends Control{
         return true;
     }
     
-    
+    public Telefono guardaTelefono(String telefono, int tipo, int idPersona){
+        try{
+            Telefono t = conexionBD.getTelefono(telefono);
+            if(t!=null){
+                return t;
+            }else if(conexionBD.guardaTelefono(telefono, tipo, idPersona)==1){
+                return conexionBD.getTelefono(telefono);
+            }else{
+                throw new Exception("No se pudo crear el Telefono");
+            }
+        }catch(Exception ex){
+            System.out.println("No se pudo crear el telefono " + ex.getMessage());
+        }
+        return null;
+    }
 }
