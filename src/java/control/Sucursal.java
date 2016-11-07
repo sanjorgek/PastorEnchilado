@@ -5,6 +5,7 @@
  */
 package control;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -16,6 +17,33 @@ public class Sucursal extends Control{
     String nombre;
     boolean servicioADomicilio;
     boolean activo;
+    String tipoSucursal;
+    Telefono telefono;
+    Direccion direccion;
+
+    public String getTipoSucursal() {
+        return tipoSucursal;
+    }
+
+    public void setTipoSucursal(String tipoSucursal) {
+        this.tipoSucursal = tipoSucursal;
+    }
+
+    public Telefono getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(Telefono telefono) {
+        this.telefono = telefono;
+    }
+
+    public Direccion getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
+    }
 
     public int getId() {
         return id;
@@ -56,11 +84,13 @@ public class Sucursal extends Control{
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 37 * hash + this.id;
-        hash = 37 * hash + Objects.hashCode(this.nombre);
-        hash = 37 * hash + (this.servicioADomicilio ? 1 : 0);
-        hash = 37 * hash + (this.activo ? 1 : 0);
+        int hash = 5;
+        hash = 89 * hash + this.id;
+        hash = 89 * hash + Objects.hashCode(this.nombre);
+        hash = 89 * hash + (this.servicioADomicilio ? 1 : 0);
+        hash = 89 * hash + (this.activo ? 1 : 0);
+        hash = 89 * hash + Objects.hashCode(this.telefono);
+        hash = 89 * hash + Objects.hashCode(this.direccion);
         return hash;
     }
 
@@ -88,8 +118,24 @@ public class Sucursal extends Control{
         if (!Objects.equals(this.nombre, other.nombre)) {
             return false;
         }
+        if (!Objects.equals(this.telefono, other.telefono)) {
+            return false;
+        }
+        if (!Objects.equals(this.direccion, other.direccion)) {
+            return false;
+        }
         return true;
     }
+
     
+    public ArrayList<Sucursal> getSucursales(){
+        ArrayList<Sucursal> sucursales = new ArrayList<Sucursal>();
+        try{
+            sucursales = conexionBD.getSucursales();
+        }catch(Exception ex){
+            System.out.println("No se pudieron recuperar las sucursales " + ex.getMessage());
+        }
+        return sucursales;
+    }
     
 }
