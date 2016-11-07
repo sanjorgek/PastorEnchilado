@@ -9,6 +9,8 @@ import control.Empleado;
 import control.Persona;
 import control.DetalleOrden;
 import control.Sucursal;
+import control.Direccion;
+import control.Telefono;
 import control.SucursalProducto;
 import control.Producto;
 import control.CategoriaProducto;
@@ -181,7 +183,7 @@ public class Conexion {
             rs.close();
             stmt.close();
         } catch (Exception ex) {
-            System.out.println("SQLException: " + ex.getMessage() + " getOrdenesByCliente");
+            System.out.println("SQLException: " + ex.getMessage() + " getMEnu");
         }
         return menu;        
     }
@@ -222,8 +224,57 @@ public class Conexion {
                 empleados.add(e);
             }
         } catch (Exception ex) {
-            System.out.println("SQLException: " + ex.getMessage() + " getOrdenesByCliente");
+            System.out.println("SQLException: " + ex.getMessage() + " getEmpleados");
         }
         return empleados;
+    }
+    
+    public ArrayList<Sucursal> getSucursales(){
+        ArrayList<Sucursal> sucursales = new ArrayList<Sucursal>();
+        Sucursal s;
+        Direccion d;
+        Telefono t;
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT nIdSucursal, sNombre, bAdomicilio, Sucursal.bACtivo, sTipoSucursal, sTelefono, Telefono.bActivo AS telActivo, sCalle, sColonia, sCp, sObservaciones, sMunicipio, sEstado\n" +
+                "FROM Sucursal\n" +
+                "LEFT JOIN CTipo_Sucursal\n" +
+                "ON Sucursal.nIdTipoSucursal=CTipo_Sucursal.nIdTipoSucursal\n" +
+                "LEFT JOIN Telefono\n" +
+                "ON Telefono.nIdTelefono=Sucursal.nIdTelefono\n" +
+                "LEFT JOIN (SELECT nIdDireccion, sCalle, sColonia, sCp, sObservaciones, bActivo, sMunicipio, sEstado\n" +
+                "	FROM Direccion\n" +
+                "	JOIN (SELECT nIdMunicipio, sMunicipio, sEstado\n" +
+                "		FROM CMunicipio\n" +
+                "		JOIN CEstado\n" +
+                "		ON CEstado.nIdEstado=CMunicipio.nIdEstado) AS EM\n" +
+                "	ON Direccion.nIdMunicipio=EM.nIdMunicipio) AS DS\n" +
+                "ON DS.nIdDireccion=Sucursal.nIdDireccion\n" +
+                "GROUP BY DS.sEstado, DS.sMunicipio, DS.sCp, DS.sColonia, DS.sCalle, Sucursal.nIdSucursal, Sucursal.sNombre, Sucursal.bAdomicilio, Sucursal.bACtivo, CTipo_Sucursal.sTipoSucursal, Telefono.sTelefono, Telefono.bActivo, DS.sObservaciones;");
+            while (rs.next()) {
+                s = new Sucursal();
+                d = new Direccion();
+                t = new Telefono();
+                s.setId(rs.getInt(1));
+                s.setNombre(rs.getString(2));
+                s.setServicioADomicilio(rs.getBoolean(3));
+                s.setActivo(rs.getBoolean(4));
+                s.setTipoSucursal(rs.getString(5));
+                t.setTelefono(rs.getString(6));
+                t.setActivo(rs.getBoolean(7));
+                d.setCalle(rs.getString(8));
+                d.setColonia(rs.getString(9));
+                d.setCp(rs.getString(10));
+                d.setObservaciones(rs.getString(11));
+                d.setMunicipio(rs.getString(12));
+                d.setEstado(rs.getString(13));
+                s.setDireccion(d);
+                s.setTelefono(t);
+                sucursales.add(s);
+            }
+        } catch (Exception ex) {
+            System.out.println("SQLException: " + ex.getMessage() + " getSucursales");
+        }
+        return sucursales;
     }
 }
